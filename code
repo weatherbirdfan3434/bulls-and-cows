@@ -1,5 +1,4 @@
 import random
-import re
 round_number = 1
 
 # create 4-digit secret code
@@ -13,20 +12,15 @@ while True:
 	# get user guess
 	raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have two or more of the same digit.]? ")
 	#check to see if digits are unique
-	zeros = re.findall("[0]", raw_guess)
-	ones = re.findall("[1]", raw_guess)
-	twos = re.findall("[2]", raw_guess)
-	threes = re.findall("[3]", raw_guess)
-	fours = re.findall("[4]", raw_guess)
-	fives = re.findall("[5]", raw_guess)
-	sixes = re.findall("[6]", raw_guess)
-	sevens = re.findall("[7]", raw_guess)
-	eights = re.findall("[8]", raw_guess)
-	nines = re.findall("[9]", raw_guess)
+	raw_guess_list = sorted(list(raw_guess))
+	z = raw_guess_list[0]
+	y = raw_guess_list[1]
+	x = raw_guess_list[2]
+	w = raw_guess_list[3]
 	# validate input
-	if raw_guess.isdigit() and len(raw_guess) == 4 and len(zeros) <= 1 and len(ones) <= 1 and len(twos) <= 1 and len(threes) <= 1 and len(fours) <= 1 and len(fives) <= 1 and len(sixes) <= 1 and len(sevens) <= 1 and len(eights) <= 1 and len(nines) <= 1:
+	if raw_guess.isdigit() and len(raw_guess) == 4 and z < y < x < w:
 		break
-	elif raw_guess.isdigit() and len(raw_guess) == 4 and (len(zeros) <= 1 or len(ones) <= 1 or len(twos) <= 1 or len(threes) <= 1 or len(fours) <= 1 or len(fives) <= 1 or len(sixes) <= 1 or len(sevens) <= 1 or len(eights) <= 1 or len(nines) <= 1):
+	elif raw_guess.isdigit() and len(raw_guess) == 4 and not(z < y < x < w):
 		print("Each digit in your guess must be different. Try again\n")
 	else:
 		print("Your guess must be a 4-digit number.  Try again\n")
@@ -52,7 +46,7 @@ if guess.keys() == secret_code:
 	print("You Win!")
 	endofgame()
 #no - process the guess
- 
+
 #check for bulls and cows
 for i in range(len(secret_code)):
 	if guess_list[i] == secret_code[i]:
