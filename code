@@ -1,69 +1,76 @@
 import random
 round_number = 1
+loop = 1
 
-# create 4-digit secret code
-secret_code = []
-avail_digits = [x for x in range(10)]
-for i in range(4):
-	secret_code.append(avail_digits.pop(random.randint(0,len(avail_digits)-1)))
-	
-#collect user input
-while True:
-	# get user guess
-	raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have two or more of the same digit.]? ")
-	#check to see if digits are unique
-	raw_guess_list = sorted(list(raw_guess))
-	z = raw_guess_list[0]
-	y = raw_guess_list[1]
-	x = raw_guess_list[2]
-	w = raw_guess_list[3]
-	# validate input
-	if raw_guess.isdigit() and len(raw_guess) == 4 and z < y < x < w:
-		break
-	elif raw_guess.isdigit() and len(raw_guess) == 4 and not(z < y < x < w):
-		print("Each digit in your guess must be different. Try again\n")
-	else:
-		print("Your guess must be a 4-digit number.  Try again\n")
- 
-#stage input
-guess = {}
-for i in range(len(raw_guess)):
-	guess[int(raw_guess[i])] = {'bull': False, 'cow':False}
-guess_list = list(guess.keys())
+while loop == 1:
+        # create 4-digit secret code
+        secret_code = []
+        avail_digits = [x for x in range(10)]
+        for i in range(4):
+                secret_code.append(avail_digits.pop(random.randint(0,len(avail_digits)-1)))
 
-#when the game ends
-def endofgame():
-        while True:
-                user_answer = input("Would you like to play this again? ")
-                if user_answer == "yes":
-                        print("Placeholder")
-                elif user_answer == "no":
-                        raise SystemExit
-                else:
-                        print("You must answer either 'yes' or 'no.'\n")
-#has user figured out the secret code?
-if guess.keys() == secret_code:
-	print("You Win!")
-	endofgame()
-#no - process the guess
+        while round_number <= 10:	
+                #collect user input
+                while True:
+                        # get user guess
+                        raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have two or more of the same digit.]? ")
+                        #check to see if digits are unique 
+                        raw_guess_list = sorted(list(raw_guess)) 
+                        z = raw_guess_list[0] 
+                        y = raw_guess_list[1] 
+                        x = raw_guess_list[2] 
+                        w = raw_guess_list[3] 
+                        # validate input 
+                        if raw_guess.isdigit() and len(raw_guess) == 4 and z < y < x < w: 
+                                break 
+                        elif raw_guess.isdigit() and len(raw_guess) == 4 and not(z < y < x < w): 
+                                print("Each digit in your guess must be different. Try again\n") 
+                        else: 
+                                print("Your guess must be a 4-digit number.  Try again\n") 
 
-#check for bulls and cows
-for i in range(len(secret_code)):
-	if guess_list[i] == secret_code[i]:
-		guess[guess_list[i]]['bull'] = True		#bull - both digit and position are correct
-	elif secret_code.count(guess_list[i]):
-		guess[guess_list[i]]['cow'] = True		#cow - digit is correct but not position
- 
-#accumulate bull/cow counts
-cntf = lambda x: sum(1 if guess[i][x] else 0 for i in guess_list)
-bullcnt = cntf('bull')
-cowcnt = cntf('cow')
- 
-#display results
-print("You have %i bull%s and %i cow%s" % (bullcnt, bullcnt!=1 and 's' or '', cowcnt, cowcnt!=1 and 's' or ''))
+                 
+                #stage input
+                guess_list, guess = ([], {})
+                for i in range(len(raw_guess)):
+                        guess_list.append(int(raw_guess[i]))
+                        guess[guess_list[i]] = {'bull': False, 'cow':False}
 
-#did the player lose?
-for i in range(len(secret_code)):
-        secret_code[i] = str(secret_code[i])
-print("You lose...sorry.\nThe secret code was " + "".join(secret_code)+ ".")
-endofgame()
+                #when the game ends
+                def endofgame():
+                        while True:
+                                user_answer = input("Would you like to play this again? ")
+                                if user_answer == "yes":
+                                        print("Beginning next game...")
+                                elif user_answer == "no":
+                                        raise SystemExit
+                                else:
+                                        print("You must answer either 'yes' or 'no.'\n")
+                #has user figured out the secret code?
+                if guess.keys() == secret_code:
+                        print("You Win!")
+                        endofgame()
+                #no - process the guess
+
+                #check for bulls and cows
+                for i in range(len(secret_code)):
+                        if guess_list[i] == secret_code[i]:
+                                guess[guess_list[i]]['bull'] = True		#bull - both digit and position are correct
+                        elif secret_code.count(guess_list[i]):
+                                guess[guess_list[i]]['cow'] = True		#cow - digit is correct but not position
+                 
+                #accumulate bull/cow counts
+                cntf = lambda x: sum(1 if guess[i][x] else 0 for i in guess_list)
+                bullcnt = cntf('bull')
+                cowcnt = cntf('cow')
+                 
+                #display results
+                print("You have %i bull%s and %i cow%s" % (bullcnt, bullcnt!=1 and 's' or '', cowcnt, cowcnt!=1 and 's' or ''))
+
+                #begin next round
+                round_number = round_number + 1
+                                       
+        #did the player lose?
+        for i in range(len(secret_code)):
+                secret_code[i] = str(secret_code[i])
+        print("You lose...sorry.\nThe secret code was " + "".join(secret_code)+ ".")
+        endofgame()
