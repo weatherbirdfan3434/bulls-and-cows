@@ -9,25 +9,19 @@ while loop == 1:
         for i in range(4):
                 secret_code.append(avail_digits.pop(random.randint(0,len(avail_digits)-1)))
 
-        while round_number <= 10:	
-                #collect user input
+        #collect user input
                 while True:
                         # get user guess
-                        raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have two or more of the same digit.]? ")
-                        #check to see if digits are unique 
-                        raw_guess_list = sorted(list(raw_guess)) 
-                        z = raw_guess_list[0] 
-                        y = raw_guess_list[1] 
-                        x = raw_guess_list[2] 
-                        w = raw_guess_list[3] 
+                        raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have\ntwo or more of the same digit.]? ")
+                        #prepare the input for validation
+                        raw_guess_list = sorted(list(raw_guess))
                         # validate input 
-                        if raw_guess.isdigit() and len(raw_guess) == 4 and z < y < x < w: 
+                        if raw_guess.isdigit() and len(raw_guess) == 4 and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]: 
                                 break 
-                        elif raw_guess.isdigit() and len(raw_guess) == 4 and not(z < y < x < w): 
+                        elif raw_guess.isdigit() and len(raw_guess) == 4 and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]): 
                                 print("Each digit in your guess must be different. Try again\n") 
                         else: 
                                 print("Your guess must be a 4-digit number.  Try again\n") 
-
                  
                 #stage input
                 guess_list, guess = ([], {})
