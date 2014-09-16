@@ -2,27 +2,43 @@ import random
 round_number = 1
 
 while True:
+        #user will determine game mode
+        if round_number != 12:
+                while True:
+                        game_mode = input("Do you want the seceret code to be 3 or 4 digits long? ")
+                        if game_mode == "3" or "4":
+                                break
+                        else:
+                                print('You must answer "3" or "4".')
         while True:
                 # create 4-digit secret code
                 secret_code = []
                 avail_digits = [x for x in range(10)]
-                for i in range(4):
+                for i in range(int(game_mode)):
                         secret_code.append(avail_digits.pop(random.randint(0,len(avail_digits)-1)))
 
                 while round_number <= 10:	
                         #collect user input
                         while True:
                                 # get user guess
-                                raw_guess = input("What do you think my secret code is [Enter 4-digit number, and you cannot have\ntwo or more of the same digit.]? ")
+                                raw_guess = input("What do you think my secret code is [Enter a " + game_mode + "-digit number, and you cannot have\ntwo or more of the same digit.]? ")
                                 #prepare the input for validation
                                 raw_guess_list = sorted(list(raw_guess))
                                 # validate input 
-                                if raw_guess.isdigit() and len(raw_guess) == 4 and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]: 
-                                        break 
-                                elif raw_guess.isdigit() and len(raw_guess) == 4 and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]): 
-                                        print("Each digit in your guess must be different. Try again\n") 
-                                else: 
-                                        print("Your guess must be a 4-digit number.  Try again\n") 
+                                if game_mode == "3":
+                                        if raw_guess.isdigit() and len(raw_guess) == int(game_mode) and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2]: 
+                                                break 
+                                        elif raw_guess.isdigit() and len(raw_guess) == int(game_mode) and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2]): 
+                                                print("Each digit in your guess must be different. Try again\n") 
+                                        else: 
+                                                print("Your guess must be a 3-digit number.  Try again\n")
+                                if game_mode == "4":
+                                        if raw_guess.isdigit() and len(raw_guess) == int(game_mode) and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]: 
+                                                break 
+                                        elif raw_guess.isdigit() and len(raw_guess) == int(game_mode) and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]): 
+                                                print("Each digit in your guess must be different. Try again\n") 
+                                        else: 
+                                                print("Your guess must be a 4-digit number.  Try again\n")
 
                         #stage input
                         guess_list, guess = ([], {})
@@ -33,6 +49,10 @@ while True:
                         #has user figured out the secret code?
                         if guess_list == secret_code:
                                 print("You Win!")
+                                if round_number == 1:
+                                        print("Wow! You figured it out on the first try!")
+                                elif round_number <= 3:
+                                        print("That was quick.")
                                 break
                         #no - process the guess
 
@@ -68,6 +88,6 @@ while True:
         elif user_answer == "no":
                 break
         else:
-                print("You must answer either 'yes' or 'no.'\n")
+                print('You must answer either "yes" or "no."\n')
                 round_number = 12
 raise SystemExit
