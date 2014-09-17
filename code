@@ -51,7 +51,7 @@ while True:
                                 print("You Win!")
                                 if round_number == 1:
                                         print("Wow! You figured it out on the first try!")
-                                elif round_number <= 3:
+                                elif round_number <= int(game_mode):
                                         print("That was quick.")
                                 break
                         #no - process the guess
