@@ -6,7 +6,7 @@ while True:
         if round_number != 12:
                 while True:
                         game_mode = input("Do you want the seceret code to be 3 or 4 digits long? ")
-                        if game_mode == "3" or "4":
+                        if game_mode == "3" or game_mode == "4":
                                 break
                         else:
                                 print('You must answer "3" or "4".')
@@ -17,28 +17,29 @@ while True:
                 for i in range(int(game_mode)):
                         secret_code.append(avail_digits.pop(random.randint(0,len(avail_digits)-1)))
 
-                while round_number <= 10:	
+                while round_number <= 10:
+                        #if the user entered the wrong number of digits
+                        def digits_wrong():
+                                print("Your guess must be a " + game_mode + "-digit number.  Try again\n")
+
                         #collect user input
                         while True:
                                 # get user guess
                                 raw_guess = input("What do you think my secret code is [Enter a " + game_mode + "-digit number, and you cannot have\ntwo or more of the same digit.]? ")
                                 #prepare the input for validation
                                 raw_guess_list = sorted(list(raw_guess))
-                                # validate input 
-                                if game_mode == "3":
-                                        if raw_guess.isdigit() and len(raw_guess) == int(game_mode) and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2]: 
-                                                break 
-                                        elif raw_guess.isdigit() and len(raw_guess) == int(game_mode) and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2]): 
-                                                print("Each digit in your guess must be different. Try again\n") 
-                                        else: 
-                                                print("Your guess must be a 3-digit number.  Try again\n")
-                                if game_mode == "4":
-                                        if raw_guess.isdigit() and len(raw_guess) == int(game_mode) and raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]: 
-                                                break 
-                                        elif raw_guess.isdigit() and len(raw_guess) == int(game_mode) and not(raw_guess_list[0] < raw_guess_list[1] < raw_guess_list[2] < raw_guess_list[3]): 
-                                                print("Each digit in your guess must be different. Try again\n") 
-                                        else: 
-                                                print("Your guess must be a 4-digit number.  Try again\n")
+                                # validate input
+                                if raw_guess.isdigit() and len(raw_guess) > 1:
+                                        for i in range(len(raw_guess) - 1):
+                                                if raw_guess_list[i] == raw_guess_list[i + 1]:
+                                                        print("All the digits must be unique.  Try again\n")
+                                                        break
+                                        if len(raw_guess) != int(game_mode):
+                                                digits_wrong()
+                                        else:
+                                                break
+                                else:
+                                        digits_wrong()   
 
                         #stage input
                         guess_list, guess = ([], {})
